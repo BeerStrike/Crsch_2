@@ -88,6 +88,9 @@
     <Compile Include="RecsForm.Designer.cs">
       <DependentUpon>RecsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShipForPlacement.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -129,6 +132,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\scale_1200 %28459%29.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\v2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\v3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\v4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
