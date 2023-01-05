@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crsch_2.Game;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,6 +19,7 @@ namespace Crsch_2 {
         private int enmfieldstarty = 40;
         List<ShipForPlacement> Shps;
         private bool[,] playerField;
+        GameManadger gm;
         public GameForm() {
             InitializeComponent();
             EnmField = new EnemyFieldBtn[10, 10];
@@ -202,6 +204,48 @@ namespace Crsch_2 {
             ((ShipForPlacement)sender).Location = this.PointToClient(Control.MousePosition);
             ((ShipForPlacement)sender).BringToFront();
         }
+        private void ShootToPlayerField(Cell cl) {
+            PlaField[cl.x, cl.y].Image = Properties.Resources.shtdw;
+            PlaField[cl.x, cl.y].BringToFront();
+           // this.Invalidate();
+        }
+        private void ShootToEnemyField(Cell cl,int type) {
+            switch (type) {
+                case 0:
+                    EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.shtdw;
+                    break;
+                case 1:
+                    EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.shpshtd;
+
+                    break;
+                case 2:
+                    EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.fallshp;
+                    break;
+            }
+            
+            EnmField[cl.x, cl.y].BringToFront();
+        }
+        private void Placed_Click(object sender, EventArgs e) {
+            foreach (ShipForPlacement sh in Shps)
+                if (!sh.isPlaced)
+                    return;
+            foreach (ShipForPlacement sh in Shps) {
+                sh.MouseDown -= Ship_MouseDown;
+                sh.MouseUp -= Ship_MouseUp;
+                sh.MouseMove -= Ship_MouseMove;
+                sh.MouseClick -= Ship_MouseClick;
+            }
+            GameStateLabel.Text = "Сделайте ход";
+            gm = new GameManadger(new ComputerEnemy(),playerField);
+            gm.ShootPlayerField += ShootToPlayerField;
+            gm.ShootEnemyField += ShootToEnemyField;
+            for (int i = 0; i < 10; i++)
+                for (int j = 0; j < 10; j++)
+                    EnmField[i, j].MouseClick += playerMoveClick;        }
+        private void playerMoveClick(object sender, EventArgs e) {
+            gm.playerMoveProcessor(new Cell(((EnemyFieldBtn)sender).x, ((EnemyFieldBtn)sender).y));
+        }
     }
+  
 }
  

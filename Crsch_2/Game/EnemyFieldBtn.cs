@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Crsch_2 {
-    class PlayerFieldCell:PictureBox {
+    class EnemyFieldBtn:Button {
         public int x { get; set; }
         public int y { get; set; }
-        public PlayerFieldCell():base() {
+        public EnemyFieldBtn() :base(){
             this.Size = new Size(30, 30);
-            this.Image = Properties.Resources.Watertext;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
 
+            this.BackgroundImage = Properties.Resources.Watertext;
+            this.FlatStyle = FlatStyle.Flat;
         }
     }
 }

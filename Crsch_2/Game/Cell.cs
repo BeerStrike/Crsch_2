@@ -8,5 +8,9 @@ namespace Crsch_2 {
     struct Cell {
         public int x;
         public int y;
+        public Cell(int sx,int sy) {
+            x = sx;
+            y = sy;
+        }
     }
 }

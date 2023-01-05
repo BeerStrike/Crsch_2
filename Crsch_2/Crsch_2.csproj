@@ -46,35 +46,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
-    <Compile Include="EnemyFieldBtn.cs">
+    <Compile Include="Game\Cell.cs" />
+    <Compile Include="Game\ComputerEnemy.cs" />
+    <Compile Include="Game\EnemyFieldBtn.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GameForm.cs">
+    <Compile Include="Game\GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameForm.Designer.cs">
+    <Compile Include="Game\GameForm.Designer.cs">
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameManadger.cs" />
-    <Compile Include="MenuForm.cs">
+    <Compile Include="Game\GameManadger.cs" />
+    <Compile Include="Game\IEnemy.cs" />
+    <Compile Include="Menu\MenuForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MenuForm.Designer.cs">
+    <Compile Include="Menu\MenuForm.Designer.cs">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NameInput.cs">
+    <Compile Include="Menu\NameInput.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NameInput.Designer.cs">
+    <Compile Include="Menu\NameInput.Designer.cs">
       <DependentUpon>NameInput.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlayerBase.cs" />
-    <Compile Include="PlayerComputer.cs" />
-    <Compile Include="PlayerFieldCell.cs">
+    <Compile Include="Game\PlayerFieldCell.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PlayerUser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlayerInfo.Designer.cs">
@@ -82,22 +81,22 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>PlayerInfo.settings</DependentUpon>
     </Compile>
-    <Compile Include="RecsForm.cs">
+    <Compile Include="Menu\RecsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RecsForm.Designer.cs">
+    <Compile Include="Menu\RecsForm.Designer.cs">
       <DependentUpon>RecsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ShipForPlacement.cs">
+    <Compile Include="Game\ShipForPlacement.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="GameForm.resx">
+    <EmbeddedResource Include="Game\GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MenuForm.resx">
+    <EmbeddedResource Include="Menu\MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NameInput.resx">
+    <EmbeddedResource Include="Menu\NameInput.resx">
       <DependentUpon>NameInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -153,6 +152,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\v4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shtdw.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shpshtd.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fallshp.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

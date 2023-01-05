@@ -73,6 +73,16 @@ namespace Crsch_2.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fallshp {
+            get {
+                object obj = ResourceManager.GetObject("fallshp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap sh1 {
             get {
                 object obj = ResourceManager.GetObject("sh1", resourceCulture);
@@ -106,6 +116,26 @@ namespace Crsch_2.Properties {
         internal static System.Drawing.Bitmap sh4 {
             get {
                 object obj = ResourceManager.GetObject("sh4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shpshtd {
+            get {
+                object obj = ResourceManager.GetObject("shpshtd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shtdw {
+            get {
+                object obj = ResourceManager.GetObject("shtdw", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
