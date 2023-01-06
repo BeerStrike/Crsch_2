@@ -9,5 +9,6 @@ namespace Crsch_2.Game {
         event GameManadger.ShootCell moveMaked;
         void askShoot();
         int getShoot(Cell cl);
+        void sendShootRes(Cell cl,int type);
     }
 }

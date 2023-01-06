@@ -13,10 +13,10 @@ namespace Crsch_2 {
     public partial class GameForm : Form {
         private EnemyFieldBtn[,] EnmField;
         private PlayerFieldCell[,] PlaField;
-        private int plafieldstartx = 40;
-        private int plafieldstarty = 40;
+        private int plafieldstartx = 50;
+        private int plafieldstarty = 50;
         private int enmfieldstartx = 540;
-        private int enmfieldstarty = 40;
+        private int enmfieldstarty = 50;
         List<ShipForPlacement> Shps;
         private bool[,] playerField;
         GameManadger gm;
@@ -50,47 +50,52 @@ namespace Crsch_2 {
                     this.Controls.Add(cell);
                 }
             ShipForPlacement shp = new ShipForPlacement(4);
-            shp.Location = new Point(100,500);
+            shp.Location = new Point(plafieldstartx+10,plafieldstarty+310+50);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(3);
-            shp.Location = new Point(100, 540);
+            shp.Location = new Point(plafieldstartx + 10, plafieldstarty + 310 + 50+ 40);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(3);
             shp.Size = new Size(90, 30);
-            shp.Location = new Point(200, 540);
+            shp.Location = new Point(plafieldstartx + 10+100, plafieldstarty + 310 + 50+40);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(2);
-            shp.Location = new Point(100, 580);
+            shp.Location = new Point(plafieldstartx + 10, plafieldstarty + 310 + 50+80);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(2);
-            shp.Location = new Point(170, 580);
+            shp.Location = new Point(plafieldstartx + 10+70, plafieldstarty + 310 + 50+80);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(2);
-            shp.Location = new Point(240, 580);
+            shp.Location = new Point(plafieldstartx + 10+140, plafieldstarty + 310 + 50+80);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(1);
-            shp.Location = new Point(100, 620);
+            shp.Location = new Point(plafieldstartx + 10, plafieldstarty + 310 + 50+120);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(1);
-            shp.Location = new Point(140, 620);
+            shp.Location = new Point(plafieldstartx + 10+40, plafieldstarty + 310 + 50+120);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(1);
-            shp.Location = new Point(180, 620);
+            shp.Location = new Point(plafieldstartx + 10+80, plafieldstarty + 310 + 50+120);
             this.Controls.Add(shp);
             Shps.Add(shp);
             shp = new ShipForPlacement(1);
-            shp.Location = new Point(220, 620);
+            shp.Location = new Point(plafieldstartx + 10+120, plafieldstarty + 310 + 50+120);
             this.Controls.Add(shp);
             Shps.Add(shp);
-            foreach(ShipForPlacement sh in Shps) {
+            this.Size = new Size(enmfieldstartx+310+50, plafieldstarty + 310 + 50 + 120+50+30);
+            Placed.Location = new Point((enmfieldstartx-plafieldstartx-310)/2+ plafieldstartx + 310-80,plafieldstarty+310+50);
+            Placed.Size = new Size(160, 20);
+            GameStateLabel.Location= new Point((enmfieldstartx - plafieldstartx - 310) / 2 + plafieldstartx + 310 - 50, plafieldstarty);
+            GameStateLabel.Size = new Size(100, 10);
+            foreach (ShipForPlacement sh in Shps) {
                 sh.MouseDown += Ship_MouseDown;
                 sh.MouseUp += Ship_MouseUp;
                 sh.MouseMove += Ship_MouseMove;
@@ -144,12 +149,11 @@ namespace Crsch_2 {
                     (cellx == 0 ||!playerField[cellx-1, celly])&&
                     (celly == 0 ||!playerField[cellx, celly-1] ) &&
                     (cellx == 9 ||!playerField[cellx + 1, celly]) &&
-                    (celly == 9 ||!playerField[cellx, celly + 1]&&
+                    (celly == 9 ||!playerField[cellx, celly + 1])&&
                     (cellx==0||celly==0|| !playerField[cellx-1, celly -1])&&
                     (cellx == 0 || celly == 9 || !playerField[cellx - 1, celly + 1]) &&
                     (cellx == 9 || celly == 0 || !playerField[cellx + 1, celly - 1]) &&
                     (cellx == 9 || celly == 9 || !playerField[cellx + 1, celly + 1]) 
-                    ) 
                     ) {
                     for (int i = 0; i < ((ShipForPlacement)sender).length; i++) {
                         if (((ShipForPlacement)sender).getDirection()) {
@@ -212,9 +216,11 @@ namespace Crsch_2 {
         private void ShootToEnemyField(Cell cl,int type) {
             switch (type) {
                 case 0:
+                    EnmField[cl.x, cl.y].MouseClick -= playerMoveClick;
                     EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.shtdw;
                     break;
                 case 1:
+                    EnmField[cl.x, cl.y].MouseClick -= playerMoveClick;
                     EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.shpshtd;
 
                     break;
@@ -229,6 +235,7 @@ namespace Crsch_2 {
             foreach (ShipForPlacement sh in Shps)
                 if (!sh.isPlaced)
                     return;
+            Placed.Dispose();
             foreach (ShipForPlacement sh in Shps) {
                 sh.MouseDown -= Ship_MouseDown;
                 sh.MouseUp -= Ship_MouseUp;
@@ -239,11 +246,21 @@ namespace Crsch_2 {
             gm = new GameManadger(new ComputerEnemy(),playerField);
             gm.ShootPlayerField += ShootToPlayerField;
             gm.ShootEnemyField += ShootToEnemyField;
+            gm.Lose += Lose;
+            gm.Win += Win;
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
                     EnmField[i, j].MouseClick += playerMoveClick;        }
         private void playerMoveClick(object sender, EventArgs e) {
             gm.playerMoveProcessor(new Cell(((EnemyFieldBtn)sender).x, ((EnemyFieldBtn)sender).y));
+        }
+        private void Lose() {
+            MessageBox.Show("Вы проиграли", "", MessageBoxButtons.OK);
+            this.Close();
+        }
+        private void Win() {
+            MessageBox.Show("Вы выйграли", "", MessageBoxButtons.OK);
+            this.Close();
         }
     }
   

@@ -24,6 +24,7 @@ namespace Crsch_2 {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.Placed = new System.Windows.Forms.Button();
             this.GameStateLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -51,10 +52,14 @@ namespace Crsch_2 {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1410, 718);
             this.Controls.Add(this.GameStateLabel);
             this.Controls.Add(this.Placed);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "GameForm";
             this.Text = "GameForm";
             this.ResumeLayout(false);
