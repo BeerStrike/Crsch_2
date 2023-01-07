@@ -225,6 +225,7 @@ namespace Crsch_2 {
 
                     break;
                 case 2:
+                    EnmField[cl.x, cl.y].MouseClick -= playerMoveClick;
                     EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.fallshp;
                     break;
             }
