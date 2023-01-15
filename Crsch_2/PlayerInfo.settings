@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Nickname" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Player</Value>
+      <Value Profile="(Default)">No name</Value>
     </Setting>
   </Settings>
 </SettingsFile>

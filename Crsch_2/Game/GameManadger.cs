@@ -6,14 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Crsch_2 {
-    class GameManadger {
+    public class GameManadger {
         public delegate void ShootCell(Cell cl);
+        public delegate void ErrEx(string s);
         public delegate void ShootECell(Cell cl,int type);
         public event ShootCell ShootPlayerField;
         public event ShootECell ShootEnemyField;
-        public delegate void EndGame();
-        public event EndGame Win;
-        public event EndGame Lose;
+        public event ErrEx ErrorExit;
+        public delegate void WinGame(int mv);
+        public delegate void LoseGame();
+        public event WinGame Win;
+        public event LoseGame Lose;
         private bool[,] plaFieldShts;
         private bool[,] enmFieldShts;
         private bool[,] plaField;
@@ -22,10 +25,11 @@ namespace Crsch_2 {
         private int playerRemain = 20;
         private int enemyRemain = 20  ;
         private List<Cell> shtd;
-        public GameManadger(IEnemy enem,bool[,] plf) {
+        int mvcnt = 0;
+        public GameManadger(IEnemy enem,bool[,] plf,bool firstMv) {
+            isPlayerMove = firstMv;
             shtd = new List<Cell>();
             enm = enem;
-            isPlayerMove = true;
             plaFieldShts = new bool[10, 10];
             enmFieldShts = new bool[10, 10];
             for(int i=0;i<10;i++)
@@ -36,8 +40,83 @@ namespace Crsch_2 {
             plaField = plf;
             enm.moveMaked += enemyMoveProcessor;
         }
+        private void shotResProcessor(Cell cl,int type) {
+            if (type == 2) {
+                    ShootPlayerField(new Cell(cl.x - 1, cl.y));
+                    ShootPlayerField(new Cell(cl.x + 1, cl.y));
+                    ShootPlayerField(new Cell(cl.x, cl.y - 1));
+                    ShootPlayerField(new Cell(cl.x, cl.y + 1));
+                    ShootPlayerField(new Cell(cl.x + 1, cl.y + 1));
+                    ShootPlayerField(new Cell(cl.x - 1, cl.y - 1));
+                    ShootPlayerField(new Cell(cl.x - 1, cl.y + 1));
+                    ShootPlayerField(new Cell(cl.x + 1, cl.y - 1));
+                if (cl.x != 0 && plaField[ cl.x - 1, cl.y]) {
+                    for (int i = 0; i < 4; i++)
+                        if (cl.x - i != 0 && plaField[cl.x - i - 1, cl.y]) {
+                            ShootPlayerField(new Cell(cl.x - i - 1, cl.y));
+                            ShootPlayerField(new Cell(cl.x - i - 1 - 1, cl.y));
+                            ShootPlayerField(new Cell(cl.x - i - 1 + 1, cl.y));
+                            ShootPlayerField(new Cell(cl.x - i - 1, cl.y - 1));
+                            ShootPlayerField(new Cell(cl.x - i - 1, cl.y + 1));
+                            ShootPlayerField(new Cell(cl.x - i - 1 + 1, cl.y + 1));
+                            ShootPlayerField(new Cell(cl.x - i - 1 - 1, cl.y - 1));
+                            ShootPlayerField(new Cell(cl.x - i - 1 - 1, cl.y + 1));
+                            ShootPlayerField(new Cell(cl.x - i - 1 + 1, cl.y - 1));
+                        } else break;
+                }
+                if (cl.y != 0 && plaField[cl.x, cl.y - 1]) {
+                    for (int i = 0; i < 4; i++)
+                        if (cl.y - i != 0 && plaField[cl.x, cl.y - i - 1]) {
+                            ShootPlayerField(new Cell(cl.x, cl.y - i - 1));
+                            ShootPlayerField(new Cell(cl.x - 1, cl.y - i - 1));
+                            ShootPlayerField(new Cell(cl.x + 1, cl.y - i - 1));
+                            ShootPlayerField(new Cell(cl.x, cl.y - i - 1 - 1));
+                            ShootPlayerField(new Cell(cl.x, cl.y - i - 1 + 1));
+                            ShootPlayerField(new Cell(cl.x + 1, cl.y - i - 1 + 1));
+                            ShootPlayerField(new Cell(cl.x - 1, cl.y - i - 1 - 1));
+                            ShootPlayerField(new Cell(cl.x - 1, cl.y - i - 1 + 1));
+                            ShootPlayerField(new Cell(cl.x + 1, cl.y - i - 1 - 1));
+                        } else break;
+
+                }
+                if (cl.x != 9 && plaField[cl.x + 1, cl.y]) {
+                    for (int i = 0; i < 4; i++)
+                        if (cl.x + i != 9 && plaField[cl.x + i + 1, cl.y]) {
+                            ShootPlayerField(new Cell(cl.x + i + 1, cl.y));
+                            ShootPlayerField(new Cell(cl.x + i + 1 - 1, cl.y));
+                            ShootPlayerField(new Cell(cl.x + i + 1 + 1, cl.y));
+                            ShootPlayerField(new Cell(cl.x + i + 1, cl.y - 1) );
+                            ShootPlayerField(new Cell(cl.x + i + 1, cl.y + 1));
+                            ShootPlayerField(new Cell(cl.x + i + 1 + 1, cl.y + 1));
+                            ShootPlayerField(new Cell(cl.x + i + 1 - 1, cl.y - 1));
+                            ShootPlayerField(new Cell(cl.x + i + 1 - 1, cl.y + 1));
+                            ShootPlayerField(new Cell(cl.x + i + 1 + 1, cl.y - 1));
+                        } else break;
+
+                }
+                if (cl.y != 9 && plaField[cl.x, cl.y + 1]) {
+                    for (int i = 0; i < 4; i++)
+                        if (cl.y + i != 9 && plaField[cl.x, cl.y + i + 1]) {
+                            ShootPlayerField(new Cell(cl.x, cl.y + i + 1));
+                            ShootPlayerField(new Cell(cl.x - 1, cl.y + i + 1));
+                            ShootPlayerField(new Cell(cl.x + 1, cl.y + i + 1));
+                            ShootPlayerField(new Cell(cl.x, cl.y - 1 + i + 1));
+                            ShootPlayerField(new Cell(cl.x, cl.y + 1 + i + 1));
+                            ShootPlayerField(new Cell(cl.x + 1, cl.y + 1 + i + 1));
+                            ShootPlayerField(new Cell(cl.x - 1, cl.y - 1 + i + 1));
+                            ShootPlayerField(new Cell(cl.x - 1, cl.y + 1 + i + 1));
+                            ShootPlayerField(new Cell(cl.x + 1, cl.y - 1 + i + 1));
+                        } else break;
+
+                }
+            }
+            enm.sendShootRes(cl, type);
+            if (--playerRemain == 0) {
+                Lose();
+            }
+        }
         public void enemyMoveProcessor(Cell cl) {
-            if (!isPlayerMove) {//TODO: список или так пойдет
+            if (!isPlayerMove) {
                 ShootPlayerField(cl);
                 plaFieldShts[cl.x, cl.y] = true; 
                 isPlayerMove = true;
@@ -47,73 +126,70 @@ namespace Crsch_2 {
                             if (cl.x - i + 1 == 0 || !plaField[cl.x - i, cl.y]) {
                                 for (int j = 1; j < 5; j++)
                                     if (cl.x + j - 1 == 9 || !plaField[cl.x + j, cl.y]) {
-                                        enm.sendShootRes(cl, 2);
-                                        break;
+                                         shotResProcessor(cl, 2);
+                                        return;
                                     } else if (!plaFieldShts[cl.x + j, cl.y]) {
-                                        enm.sendShootRes(cl, 1);
-                                        break;
+                                         shotResProcessor(cl, 1);
+                                        return;
                                     }
                             } else if (!plaFieldShts[cl.x - i, cl.y]) {
-                                enm.sendShootRes(cl, 1);
-                                break;
+                                 shotResProcessor(cl, 1);
+                                return;
                             }
                     } else if ((cl.y != 0 && plaField[cl.x, cl.y - 1]) && (cl.y != 9 && plaField[cl.x, cl.y + 1])) {
                         for (int i = 1; i < 5; i++)
                             if (cl.y - i + 1 == 0 || !plaField[cl.x, cl.y - i]) {
                                 for (int j = 1; j < 5; j++)
                                     if (cl.y + j - 1 == 9 || !plaField[cl.x, cl.y + j]) {
-                                        enm.sendShootRes(cl, 2);
-                                        break;
+                                         shotResProcessor(cl, 2);
+                                        return;
                                     } else if (!plaFieldShts[cl.x, cl.y + j]) {
-                                        enm.sendShootRes(cl, 1);
-                                        break;
+                                         shotResProcessor(cl, 1);
+                                        return;
                                     }
                             } else if (!plaFieldShts[cl.x, cl.y - i]) {
-                                enm.sendShootRes(cl, 1);
-                                break;
+                                 shotResProcessor(cl, 1);
+                                return;
                             }
                     } else if (cl.x != 0 && plaField[cl.x - 1, cl.y]) {
                         for (int i = 1; i < 5; i++)
                             if (cl.x - i + 1 == 0 || !plaField[cl.x - i, cl.y]) {
-                                enm.sendShootRes(cl, 2);
-                                break;
+                                 shotResProcessor(cl, 2);
+                                return;
                             } else if (!plaFieldShts[cl.x - i, cl.y]) {
-                                enm.sendShootRes(cl, 1);
-                                break;
+                                 shotResProcessor(cl, 1);
+                                return;
                             }
                     } else if (cl.y != 0 && plaField[cl.x, cl.y - 1]) {
                         for (int i = 1; i < 5; i++)
                             if (cl.y - i + 1 == 0 || !plaField[cl.x, cl.y - i]) {
-                                enm.sendShootRes(cl, 2);
-                                break;
+                                 shotResProcessor(cl, 2);
+                                return;
                             } else if (!plaFieldShts[cl.x, cl.y - i]) {
-                                enm.sendShootRes(cl, 1);
-                                break;
+                                 shotResProcessor(cl, 1);
+                                return;
                             }
                     } else if (cl.x != 9 && plaField[cl.x + 1, cl.y]) {
                         for (int i = 1; i < 5; i++)
                             if (cl.x + i - 1 == 9 || !plaField[cl.x + i, cl.y]) {
-                                enm.sendShootRes(cl, 2);
-                                break; 
+                                 shotResProcessor(cl, 2);
+                                return; 
                             } else if (!plaFieldShts[cl.x + i, cl.y]) {
-                                enm.sendShootRes(cl, 1);
-                                break;
+                                 shotResProcessor(cl, 1);
+                                return;
                             }
                     } else if (cl.y != 9 && plaField[cl.x, cl.y + 1]) {
                         for (int i = 1; i < 5; i++)
                             if (cl.y + i - 1 == 9 || !plaField[cl.x, cl.y + i]) {
-                                enm.sendShootRes(cl, 2);
-                                break;
+                                 shotResProcessor(cl, 2);
+                                return;
 
                             } else if (!plaFieldShts[cl.x, cl.y + i]) {
-                                enm.sendShootRes(cl, 1);
-                                break;
+                                 shotResProcessor(cl, 1);
+                                return;
                             }
 
-                    } else enm.sendShootRes(cl, 2);
-                    if (--playerRemain == 0) {
-                        Lose();
-                    }
+                    } else  shotResProcessor(cl, 2);
                 } else {
                     enm.sendShootRes(cl, 0);
                 }
@@ -122,10 +198,14 @@ namespace Crsch_2 {
         public void playerMoveProcessor(Cell cl) {
             if (isPlayerMove&&!enmFieldShts[cl.x,cl.y]) {
                 int gt = enm.getShoot(cl);
+                if (gt == -1) {
+                    ErrorExit("Превышено время ожидания");
+                    return;
+                }
+                mvcnt++;
                 if (gt != 0) {
                     shtd.Add(cl);
-                    if (--enemyRemain == 0)
-                        Win();
+                    --enemyRemain;
                     if (gt == 2) {
                         if (cl.x != 0 && !shtd.Contains(new Cell(cl.x - 1, cl.y)))
                             ShootEnemyField(new Cell(cl.x - 1, cl.y), 0);
@@ -147,21 +227,21 @@ namespace Crsch_2 {
                             for (int i = 0; i < 4; i++)
                                 if (cl.x - i != 0 && shtd.Contains(new Cell(cl.x - i - 1, cl.y))) {
                                     ShootEnemyField(new Cell(cl.x - i - 1, cl.y), 2);
-                                    if (cl.x != 0 && !shtd.Contains(new Cell(cl.x - i - 1 - 1, cl.y)))
+                                    if (cl.x - i - 1 != 0 && !shtd.Contains(new Cell(cl.x - i - 1 - 1, cl.y)))
                                         ShootEnemyField(new Cell(cl.x - i - 1 - 1, cl.y), 0);
-                                    if (cl.x != 9 && !shtd.Contains(new Cell(cl.x - i - 1 + 1, cl.y)))
+                                    if (cl.x - i - 1 != 9 && !shtd.Contains(new Cell(cl.x - i - 1 + 1, cl.y)))
                                         ShootEnemyField(new Cell(cl.x - i - 1 + 1, cl.y), 0);
                                     if (cl.y != 0 && !shtd.Contains(new Cell(cl.x - i - 1, cl.y - 1)))
                                         ShootEnemyField(new Cell(cl.x - i - 1, cl.y - 1), 0);
                                     if (cl.y != 9 && !shtd.Contains(new Cell(cl.x - i - 1, cl.y + 1)))
                                         ShootEnemyField(new Cell(cl.x - i - 1, cl.y + 1), 0);
-                                    if (cl.x != 9 && cl.y != 9 && !shtd.Contains(new Cell(cl.x - i - 1 + 1, cl.y + 1)))
+                                    if (cl.x - i - 1 != 9 && cl.y != 9 && !shtd.Contains(new Cell(cl.x - i - 1 + 1, cl.y + 1)))
                                         ShootEnemyField(new Cell(cl.x - i - 1 + 1, cl.y + 1), 0);
-                                    if (cl.x != 0 && cl.y != 0 && !shtd.Contains(new Cell(cl.x - i - 1 - 1, cl.y - 1)))
+                                    if (cl.x - i - 1 != 0 && cl.y != 0 && !shtd.Contains(new Cell(cl.x - i - 1 - 1, cl.y - 1)))
                                         ShootEnemyField(new Cell(cl.x - i - 1 - 1, cl.y - 1), 0);
-                                    if (cl.x != 0 && cl.y != 9 && !shtd.Contains(new Cell(cl.x - i - 1 - 1, cl.y + 1)))
+                                    if (cl.x - i - 1 != 0 && cl.y != 9 && !shtd.Contains(new Cell(cl.x - i - 1 - 1, cl.y + 1)))
                                         ShootEnemyField(new Cell(cl.x - i - 1 - 1, cl.y + 1), 0);
-                                    if (cl.x != 9 && cl.y != 0 && !shtd.Contains(new Cell(cl.x - i - 1 + 1, cl.y - 1)))
+                                    if (cl.x - i - 1 != 9 && cl.y != 0 && !shtd.Contains(new Cell(cl.x - i - 1 + 1, cl.y - 1)))
                                         ShootEnemyField(new Cell(cl.x - i - 1 + 1, cl.y - 1), 0);
                                 } else break;
                         }
@@ -173,17 +253,17 @@ namespace Crsch_2 {
                                         ShootEnemyField(new Cell(cl.x - 1, cl.y - i - 1), 0);
                                     if (cl.x != 9 && !shtd.Contains(new Cell(cl.x + 1, cl.y - i - 1)))
                                         ShootEnemyField(new Cell(cl.x + 1, cl.y - i - 1), 0);
-                                    if (cl.y != 0 && !shtd.Contains(new Cell(cl.x, cl.y - i - 1 - 1)))
+                                    if (cl.y - i - 1 != 0 && !shtd.Contains(new Cell(cl.x, cl.y - i - 1 - 1)))
                                         ShootEnemyField(new Cell(cl.x, cl.y - i - 1 - 1), 0);
-                                    if (cl.y != 9 && !shtd.Contains(new Cell(cl.x, cl.y - i - 1 + 1)))
+                                    if (cl.y - i - 1 != 9 && !shtd.Contains(new Cell(cl.x, cl.y - i - 1 + 1)))
                                         ShootEnemyField(new Cell(cl.x, cl.y - i - 1 + 1), 0);
-                                    if (cl.x != 9 && cl.y != 9 && !shtd.Contains(new Cell(cl.x + 1, cl.y - i - 1 + 1)))
+                                    if (cl.x != 9 && cl.y - i - 1 != 9 && !shtd.Contains(new Cell(cl.x + 1, cl.y - i - 1 + 1)))
                                         ShootEnemyField(new Cell(cl.x + 1, cl.y - i - 1 + 1), 0);
-                                    if (cl.x != 0 && cl.y != 0 && !shtd.Contains(new Cell(cl.x - 1, cl.y - i - 1 - 1)))
+                                    if (cl.x != 0 && cl.y - i - 1 != 0 && !shtd.Contains(new Cell(cl.x - 1, cl.y - i - 1 - 1)))
                                         ShootEnemyField(new Cell(cl.x - 1, cl.y - i - 1 - 1), 0);
-                                    if (cl.x != 0 && cl.y != 9 && !shtd.Contains(new Cell(cl.x - 1, cl.y - i - 1 + 1)))
+                                    if (cl.x != 0 && cl.y - i - 1 != 9 && !shtd.Contains(new Cell(cl.x - 1, cl.y - i - 1 + 1)))
                                         ShootEnemyField(new Cell(cl.x - 1, cl.y - i - 1 + 1), 0);
-                                    if (cl.x != 9 && cl.y != 0 && !shtd.Contains(new Cell(cl.x + 1, cl.y - i - 1 - 1)))
+                                    if (cl.x != 9 && cl.y - i - 1 != 0 && !shtd.Contains(new Cell(cl.x + 1, cl.y - i - 1 - 1)))
                                         ShootEnemyField(new Cell(cl.x + 1, cl.y - i - 1 - 1), 0);
                                 } else break;
 
@@ -192,44 +272,44 @@ namespace Crsch_2 {
                             for (int i = 0; i < 4; i++)
                                 if (cl.x + i != 9 && shtd.Contains(new Cell(cl.x + i + 1, cl.y))) {
                                     ShootEnemyField(new Cell(cl.x + i + 1, cl.y), 2);
-                                    if (cl.x != 0 && !shtd.Contains(new Cell(cl.x + i + 1 - 1, cl.y)))
+                                    if (cl.x + i + 1 != 0 && !shtd.Contains(new Cell(cl.x + i + 1 - 1, cl.y)))
                                         ShootEnemyField(new Cell(cl.x + i + 1 - 1, cl.y), 0);
-                                    if (cl.x != 9 && !shtd.Contains(new Cell(cl.x + i + 1 + 1, cl.y)))
+                                    if (cl.x + i + 1 != 9 && !shtd.Contains(new Cell(cl.x + i + 1 + 1, cl.y)))
                                         ShootEnemyField(new Cell(cl.x + i + 1 + 1, cl.y), 0);
                                     if (cl.y != 0 && !shtd.Contains(new Cell(cl.x + i + 1, cl.y - 1)))
                                         ShootEnemyField(new Cell(cl.x + i + 1, cl.y - 1), 0);
                                     if (cl.y != 9 && !shtd.Contains(new Cell(cl.x + i + 1, cl.y + 1)))
                                         ShootEnemyField(new Cell(cl.x + i + 1, cl.y + 1), 0);
-                                    if (cl.x != 9 && cl.y != 9 && !shtd.Contains(new Cell(cl.x + i + 1 + 1, cl.y + 1)))
+                                    if (cl.x + i + 1 != 9 && cl.y != 9 && !shtd.Contains(new Cell(cl.x + i + 1 + 1, cl.y + 1)))
                                         ShootEnemyField(new Cell(cl.x + i + 1 + 1, cl.y + 1), 0);
-                                    if (cl.x != 0 && cl.y != 0 && !shtd.Contains(new Cell(cl.x + i + 1 - 1, cl.y - 1)))
+                                    if (cl.x + i + 1 != 0 && cl.y != 0 && !shtd.Contains(new Cell(cl.x + i + 1 - 1, cl.y - 1)))
                                         ShootEnemyField(new Cell(cl.x + i + 1 - 1, cl.y - 1), 0);
-                                    if (cl.x != 0 && cl.y != 9 && !shtd.Contains(new Cell(cl.x + i + 1 - 1, cl.y + 1)))
+                                    if (cl.x + i + 1 != 0 && cl.y != 9 && !shtd.Contains(new Cell(cl.x + i + 1 - 1, cl.y + 1)))
                                         ShootEnemyField(new Cell(cl.x + i + 1 - 1, cl.y + 1), 0);
-                                    if (cl.x != 9 && cl.y != 0 && !shtd.Contains(new Cell(cl.x + i + 1 + 1, cl.y - 1)))
+                                    if (cl.x + i + 1 != 9 && cl.y != 0 && !shtd.Contains(new Cell(cl.x + i + 1 + 1, cl.y - 1)))
                                         ShootEnemyField(new Cell(cl.x + i + 1 + 1, cl.y - 1), 0);
                                 } else break;
 
                         }
                         if (cl.y != 9 && shtd.Contains(new Cell(cl.x, cl.y + 1))) {
                             for (int i = 0; i < 4; i++)
-                                if (cl.y + i != 0 && shtd.Contains(new Cell(cl.x, cl.y + i + 1))) {
+                                if (cl.y + i != 9 && shtd.Contains(new Cell(cl.x, cl.y + i + 1))) {
                                     ShootEnemyField(new Cell(cl.x, cl.y + i + 1), 2);
                                     if (cl.x != 0 && !shtd.Contains(new Cell(cl.x - 1, cl.y + i + 1)))
                                         ShootEnemyField(new Cell(cl.x - 1, cl.y + i + 1), 0);
                                     if (cl.x != 9 && !shtd.Contains(new Cell(cl.x + 1, cl.y + i + 1)))
                                         ShootEnemyField(new Cell(cl.x + 1, cl.y + i + 1), 0);
-                                    if (cl.y != 0 && !shtd.Contains(new Cell(cl.x, cl.y + i + 1 - 1)))
+                                    if (cl.y + i + 1 != 0 && !shtd.Contains(new Cell(cl.x, cl.y + i + 1 - 1)))
                                         ShootEnemyField(new Cell(cl.x, cl.y - 1 + i + 1), 0);
-                                    if (cl.y != 9 && !shtd.Contains(new Cell(cl.x, cl.y + i + 1 + 1)))
+                                    if (cl.y + i + 1 != 9 && !shtd.Contains(new Cell(cl.x, cl.y + i + 1 + 1)))
                                         ShootEnemyField(new Cell(cl.x, cl.y + 1 + i + 1), 0);
-                                    if (cl.x != 9 && cl.y != 9 && !shtd.Contains(new Cell(cl.x + 1, cl.y + i + 1 + 1)))
+                                    if (cl.x != 9 && cl.y + i + 1 != 9 && !shtd.Contains(new Cell(cl.x + 1, cl.y + i + 1 + 1)))
                                         ShootEnemyField(new Cell(cl.x + 1, cl.y + 1 + i + 1), 0);
-                                    if (cl.x != 0 && cl.y != 0 && !shtd.Contains(new Cell(cl.x - 1, cl.y + i + 1 - 1)))
+                                    if (cl.x != 0 && cl.y + i + 1 != 0 && !shtd.Contains(new Cell(cl.x - 1, cl.y + i + 1 - 1)))
                                         ShootEnemyField(new Cell(cl.x - 1, cl.y - 1 + i + 1), 0);
-                                    if (cl.x != 0 && cl.y != 9 && !shtd.Contains(new Cell(cl.x - 1, cl.y + i + 1 + 1)))
+                                    if (cl.x != 0 && cl.y + i + 1 != 9 && !shtd.Contains(new Cell(cl.x - 1, cl.y + i + 1 + 1)))
                                         ShootEnemyField(new Cell(cl.x - 1, cl.y + 1 + i + 1), 0);
-                                    if (cl.x != 9 && cl.y != 0 && !shtd.Contains(new Cell(cl.x + 1, cl.y + i + 1 - 1)))
+                                    if (cl.x != 9 && cl.y + i + 1 != 0 && !shtd.Contains(new Cell(cl.x + 1, cl.y + i + 1 - 1)))
                                         ShootEnemyField(new Cell(cl.x + 1, cl.y - 1 + i + 1), 0);
                                 } else break;
 
@@ -241,6 +321,10 @@ namespace Crsch_2 {
                 isPlayerMove=false;
                 enm.askShoot();
             }
+            if (enemyRemain == 0) {
+                Win(mvcnt);
+            }
         }
     }
 }
+ 

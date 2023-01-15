@@ -62,13 +62,15 @@ namespace Crsch_2 {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(224, 62);
+            this.ClientSize = new System.Drawing.Size(199, 62);
             this.Controls.Add(this.NameInputBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.OK_btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
+            this.MaximizeBox = false;
             this.Name = "NameInput";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Введите имя";
             this.Load += new System.EventHandler(this.NameInput_Load);
             this.ResumeLayout(false);

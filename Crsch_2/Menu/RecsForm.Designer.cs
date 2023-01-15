@@ -24,12 +24,36 @@ namespace Crsch_2 {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
+            this.TableHeader = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // TableHeader
+            // 
+            this.TableHeader.AutoSize = true;
+            this.TableHeader.Location = new System.Drawing.Point(12, 9);
+            this.TableHeader.Name = "TableHeader";
+            this.TableHeader.Size = new System.Drawing.Size(104, 13);
+            this.TableHeader.TabIndex = 0;
+            this.TableHeader.Text = "Таблица рекордов:";
+            // 
+            // RecsForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "RecsForm";
+            this.ClientSize = new System.Drawing.Size(181, 174);
+            this.Controls.Add(this.TableHeader);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.Name = "RecsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Рекорды";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Label TableHeader;
     }
 }

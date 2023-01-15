@@ -25,7 +25,7 @@ namespace Crsch_2 {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Player")]
+        [global::System.Configuration.DefaultSettingValueAttribute("No name")]
         public string Nickname {
             get {
                 return ((string)(this["Nickname"]));

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Crsch_2 {
-    struct Cell {
+    public struct Cell {
         public int x;
         public int y;
         public Cell(int sx,int sy) {

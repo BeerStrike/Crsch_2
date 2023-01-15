@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,8 +22,16 @@ namespace Crsch_2 {
         List<ShipForPlacement> Shps;
         private bool[,] playerField;
         GameManadger gm;
-        public GameForm() {
+        private IEnemy enm;
+        private bool fmv;
+        public GameForm(IEnemy enem,bool firstMove) {
+            enm = enem;
+            fmv = firstMove;
             InitializeComponent();
+            PlayerNameLabel.Text = PlayerInfo.Default.Nickname;
+            PlayerNameLabel.Location = new Point(plafieldstartx , plafieldstarty -40);
+            EnemyNameLabel.Text = enm.getName();
+            EnemyNameLabel.Location = new Point(enmfieldstartx, enmfieldstarty - 40);
             EnmField = new EnemyFieldBtn[10, 10];
             PlaField = new PlayerFieldCell[10, 10];
             Shps = new List<ShipForPlacement>();
@@ -37,7 +47,6 @@ namespace Crsch_2 {
                     btn.x = i;
                     btn.y = j;
                     btn.Location = new Point(enmfieldstartx + i * 31, enmfieldstarty + j * 31);
-                    btn.Click += EnemyFielgClick;
                     this.Controls.Add(btn);
                 }
             for (int i = 0; i < 10; i++)
@@ -49,6 +58,32 @@ namespace Crsch_2 {
                     cell.Location = new Point(plafieldstartx + i * 31, plafieldstarty + j * 31);
                     this.Controls.Add(cell);
                 }
+            for(int i = 0; i < 10; i++){
+                Label lbl = new Label();
+                lbl.Text = i.ToString();
+                lbl.Location = new Point(plafieldstartx-20, plafieldstarty+10+31*i);
+                lbl.Size = new Size(15, 15);
+                lbl.ForeColor = Color.White;
+                this.Controls.Add(lbl);
+                lbl = new Label();
+                lbl.Text = i.ToString();
+                lbl.Location = new Point(enmfieldstartx - 20, enmfieldstarty+10 + 31 * i);
+                lbl.Size = new Size(15, 15);
+                lbl.ForeColor = Color.White;
+                this.Controls.Add(lbl);
+                lbl = new Label();
+                lbl.Text = ((Char)(Convert.ToUInt16('А') + i)).ToString();
+                lbl.Location = new Point(plafieldstartx + 10 + 31 * i, plafieldstarty -20);
+                lbl.Size = new Size(15, 15);
+                lbl.ForeColor = Color.White;
+                this.Controls.Add(lbl);
+                lbl = new Label();
+                lbl.Text = ((Char)(Convert.ToUInt16('А') + i)).ToString();
+                lbl.Location = new Point(enmfieldstartx + 10 + 31 * i, enmfieldstarty -20);
+                lbl.Size = new Size(15, 15);
+                lbl.ForeColor = Color.White;
+                this.Controls.Add(lbl);
+            }
             ShipForPlacement shp = new ShipForPlacement(4);
             shp.Location = new Point(plafieldstartx+10,plafieldstarty+310+50);
             this.Controls.Add(shp);
@@ -102,9 +137,6 @@ namespace Crsch_2 {
                 sh.MouseClick += Ship_MouseClick;
             }
         }
-        private void EnemyFielgClick(object sender, EventArgs e) {
-            PlaField[((EnemyFieldBtn)sender).x, ((EnemyFieldBtn)sender).y].BackgroundImage = Properties.Resources.ExplodeText;
-        }
         private void Ship_MouseClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Right)
                 ((ShipForPlacement)sender).rotate();
@@ -115,7 +147,7 @@ namespace Crsch_2 {
             int my = ((ShipForPlacement)sender).Location.Y;
             int cellx = (mx - plafieldstartx) / 31;
             int celly = (my - plafieldstarty) / 31;
-            if (((ShipForPlacement)sender).isPlaced){
+            if (((ShipForPlacement)sender).getPlaced()){
                 for (int i = 0; i < ((ShipForPlacement)sender).length; i++) {
                     if (((ShipForPlacement)sender).getDirection()) {
                         playerField[cellx, celly + i] = false;
@@ -124,14 +156,8 @@ namespace Crsch_2 {
                     }
                 }
                 ((ShipForPlacement)sender).Location = new Point(cellx * 31 + plafieldstartx, celly * 31 + plafieldstarty);
-                ((ShipForPlacement)sender).isPlaced = false;
+                ((ShipForPlacement)sender).Unplace();
                 ((ShipForPlacement)sender).BringToFront();
-                for (int i = 0; i < 10; i++)
-                    for (int j = 0; j < 10; j++)
-                        if (playerField[i, j])
-                            EnmField[i, j].BackgroundImage = Properties.Resources.ExplodeText;
-                        else
-                            EnmField[i, j].BackgroundImage = Properties.Resources.Watertext;
             }
 
         }
@@ -190,28 +216,26 @@ namespace Crsch_2 {
                         }
                     }
                 ((ShipForPlacement)sender).Location = new Point(cellx * 31 + plafieldstartx, celly * 31 + plafieldstarty);
-                    ((ShipForPlacement)sender).isPlaced = true;
-                    
-                    for (int i = 0; i < 10; i++)
-                        for (int j = 0; j < 10; j++)
-                            if (playerField[i, j])
-                                EnmField[i, j].BackgroundImage = Properties.Resources.ExplodeText;
-                            else
-                                EnmField[i, j].BackgroundImage = Properties.Resources.Watertext;
+                    ((ShipForPlacement)sender).Place();
                 }
             }
             ((ShipForPlacement)sender).BringToFront();
         }
-
-        private void Ship_MouseMove(object sender, MouseEventArgs e) {
+        private void ErExit(String s) {
+            MessageBox.Show(s, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            this.Close();
+        }
+       private void Ship_MouseMove(object sender, MouseEventArgs e) {
             if(((ShipForPlacement)sender).isMoving)
             ((ShipForPlacement)sender).Location = this.PointToClient(Control.MousePosition);
             ((ShipForPlacement)sender).BringToFront();
         }
         private void ShootToPlayerField(Cell cl) {
-            PlaField[cl.x, cl.y].Image = Properties.Resources.shtdw;
-            PlaField[cl.x, cl.y].BringToFront();
-           // this.Invalidate();
+            if (cl.x >= 0 && cl.x <= 9 && cl.y >= 0 && cl.y <= 9) {
+                PlaField[cl.x, cl.y].Image = playerField[cl.x, cl.y] ? Properties.Resources.fallshp : Properties.Resources.shtdw;
+                PlaField[cl.x, cl.y].BringToFront();
+                GameStateLabel.Text = "Сделайте ход";
+            }
         }
         private void ShootToEnemyField(Cell cl,int type) {
             switch (type) {
@@ -222,19 +246,18 @@ namespace Crsch_2 {
                 case 1:
                     EnmField[cl.x, cl.y].MouseClick -= playerMoveClick;
                     EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.shpshtd;
-
                     break;
                 case 2:
                     EnmField[cl.x, cl.y].MouseClick -= playerMoveClick;
                     EnmField[cl.x, cl.y].BackgroundImage = Properties.Resources.fallshp;
                     break;
             }
-            
             EnmField[cl.x, cl.y].BringToFront();
+            GameStateLabel.Text = "Ожидание хода соперника";
         }
-        private void Placed_Click(object sender, EventArgs e) {
+        private async void Placed_Click(object sender, EventArgs e) {
             foreach (ShipForPlacement sh in Shps)
-                if (!sh.isPlaced)
+                if (!sh.getPlaced())
                     return;
             Placed.Dispose();
             foreach (ShipForPlacement sh in Shps) {
@@ -243,15 +266,33 @@ namespace Crsch_2 {
                 sh.MouseMove -= Ship_MouseMove;
                 sh.MouseClick -= Ship_MouseClick;
             }
-            GameStateLabel.Text = "Сделайте ход";
-            gm = new GameManadger(new ComputerEnemy(),playerField);
+            GameStateLabel.Text = "Ожидание соперника";
+            enm.Ready();
+            int res = 0;
+            while (res!=1) {
+                await Task.Run(() => {
+                    res = enm.CheckConnect();
+                    Thread.Sleep(1000);
+                });
+                if (res == 0)
+                    ErExit("Превышено время ожидания");
+            }
+            if (fmv)
+                GameStateLabel.Text = "Сделайте ход";
+            else {
+                GameStateLabel.Text = "Ожидание хода соперника";
+            }
+            gm = new GameManadger(enm,playerField,fmv);
             gm.ShootPlayerField += ShootToPlayerField;
             gm.ShootEnemyField += ShootToEnemyField;
+            gm.ErrorExit += ErExit;
             gm.Lose += Lose;
             gm.Win += Win;
             for (int i = 0; i < 10; i++)
                 for (int j = 0; j < 10; j++)
-                    EnmField[i, j].MouseClick += playerMoveClick;        }
+                    EnmField[i, j].MouseClick += playerMoveClick;    
+        }
+        
         private void playerMoveClick(object sender, EventArgs e) {
             gm.playerMoveProcessor(new Cell(((EnemyFieldBtn)sender).x, ((EnemyFieldBtn)sender).y));
         }
@@ -259,11 +300,50 @@ namespace Crsch_2 {
             MessageBox.Show("Вы проиграли", "", MessageBoxButtons.OK);
             this.Close();
         }
-        private void Win() {
+        private void Win(int mv) {
+            string[] nms = new string[5];
+            int[] rcs = new int[5];
+            int l = 0;
+            if (File.Exists("recs.txt"))
+                using (StreamReader sr = new StreamReader("Recs.txt")) {
+                    for (int i = 0; i < 5; i++) {
+                        if (!sr.EndOfStream) {
+                            nms[i] = sr.ReadLine();
+                            rcs[i] = Int32.Parse(sr.ReadLine());
+                            l++;
+                        }
+                    }
+                }
+            using (StreamWriter sw = new StreamWriter("Recs.txt")) {
+                bool ispl = false;
+                int i= 0;
+                while (i<l) {
+                    if (!ispl) {
+                        if (rcs[i] <= mv) {
+                            sw.WriteLine(nms[i]);
+                            sw.WriteLine(rcs[i]);
+                            i++;
+                        } else {
+                            sw.WriteLine(PlayerInfo.Default.Nickname);
+                            sw.WriteLine(mv);
+                            ispl = true;
+                        }
+                    } else {
+                        sw.WriteLine(nms[i]);
+                        sw.WriteLine(rcs[i]);
+                        i++;
+                    }
+
+                }
+                if (!ispl) {
+                    sw.WriteLine(PlayerInfo.Default.Nickname);
+                    sw.WriteLine(mv);
+                }
+            }
             MessageBox.Show("Вы выйграли", "", MessageBoxButtons.OK);
             this.Close();
         }
     }
   
 }
- 
+  

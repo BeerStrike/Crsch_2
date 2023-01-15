@@ -31,6 +31,7 @@ namespace Crsch_2 {
             this.ExtiBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.PlayerNameLabel = new System.Windows.Forms.Label();
+            this.ChangeName = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SnglPlayByn
@@ -64,7 +65,7 @@ namespace Crsch_2 {
             this.RecBtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RecBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.RecBtn.Location = new System.Drawing.Point(390, 458);
+            this.RecBtn.Location = new System.Drawing.Point(390, 485);
             this.RecBtn.Name = "RecBtn";
             this.RecBtn.Size = new System.Drawing.Size(100, 23);
             this.RecBtn.TabIndex = 2;
@@ -77,7 +78,7 @@ namespace Crsch_2 {
             this.ExtiBtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ExtiBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ExtiBtn.Location = new System.Drawing.Point(390, 490);
+            this.ExtiBtn.Location = new System.Drawing.Point(390, 517);
             this.ExtiBtn.Name = "ExtiBtn";
             this.ExtiBtn.Size = new System.Drawing.Size(100, 23);
             this.ExtiBtn.TabIndex = 3;
@@ -103,6 +104,16 @@ namespace Crsch_2 {
             this.PlayerNameLabel.TabIndex = 5;
             this.PlayerNameLabel.Text = "PlayerNameLabel";
             // 
+            // ChangeName
+            // 
+            this.ChangeName.Location = new System.Drawing.Point(390, 456);
+            this.ChangeName.Name = "ChangeName";
+            this.ChangeName.Size = new System.Drawing.Size(100, 23);
+            this.ChangeName.TabIndex = 6;
+            this.ChangeName.Text = "Сменить имя";
+            this.ChangeName.UseVisualStyleBackColor = true;
+            this.ChangeName.Click += new System.EventHandler(this.ChangeName_Click);
+            // 
             // MenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -110,13 +121,17 @@ namespace Crsch_2 {
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(895, 586);
+            this.Controls.Add(this.ChangeName);
             this.Controls.Add(this.PlayerNameLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ExtiBtn);
             this.Controls.Add(this.RecBtn);
             this.Controls.Add(this.MltpPlayBtn);
             this.Controls.Add(this.SnglPlayByn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "MenuForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Морской бой";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -131,6 +146,7 @@ namespace Crsch_2 {
         private System.Windows.Forms.Button ExtiBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label PlayerNameLabel;
+        private System.Windows.Forms.Button ChangeName;
     }
 }
 

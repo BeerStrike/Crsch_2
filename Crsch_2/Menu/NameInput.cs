@@ -15,7 +15,10 @@ namespace Crsch_2 {
         }
 
         private void OK_btnClick(object sender, EventArgs e) {
-            PlayerInfo.Default.Nickname= NameInputBox.Text;
+            if (NameInputBox.Text != "")
+                PlayerInfo.Default.Nickname = NameInputBox.Text;
+            else
+                PlayerInfo.Default.Nickname = "Игрок";
             this.Close();
         }
 

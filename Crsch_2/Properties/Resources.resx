@@ -151,7 +151,28 @@
   <data name="v4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\v4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="w1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\w1.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="w2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\w2.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="w3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\w3.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="w4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\w4.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Watertext" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\9b693c5c12c61980bf68c4cec2e4a0ea.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wv2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wv2.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wv3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wv3.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wv4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wv4.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
