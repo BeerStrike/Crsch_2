@@ -72,7 +72,6 @@ namespace Crsch_2 {
             this.Name = "NameInput";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Введите имя";
-            this.Load += new System.EventHandler(this.NameInput_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

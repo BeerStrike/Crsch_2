@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Crsch_2.Game {
     class NetworkEnemy : IEnemy {
-        Socket sckt;
-        int asyncResRectver = -1;
-        int timeOut = 5;
-        bool isReady=false;
-        string name;
+        private Socket sckt;
+        private int asyncResRectver = -1;
+        private int timeOut = 5;
+        private bool isReady =false;
+        private string name;
         public NetworkEnemy(Socket s,string nme) {
             name = nme;
             sckt = s;

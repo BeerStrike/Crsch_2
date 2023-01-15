@@ -21,9 +21,5 @@ namespace Crsch_2 {
                 PlayerInfo.Default.Nickname = "Игрок";
             this.Close();
         }
-
-        private void NameInput_Load(object sender, EventArgs e) {
-
-        }
     }
 }

@@ -19,9 +19,9 @@ namespace Crsch_2 {
         private int plafieldstarty = 50;
         private int enmfieldstartx = 540;
         private int enmfieldstarty = 50;
-        List<ShipForPlacement> Shps;
+        private List<ShipForPlacement> Shps;
         private bool[,] playerField;
-        GameManadger gm;
+        private GameManadger gm;
         private IEnemy enm;
         private bool fmv;
         public GameForm(IEnemy enem,bool firstMove) {

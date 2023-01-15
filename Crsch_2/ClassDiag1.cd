@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Crsch_2.PlayerFieldCell" Collapsed="true">
+    <Position X="4.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Game\PlayerFieldCell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crsch_2.ShipForPlacement" Collapsed="true">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAAEICAAAEAQAAAAAAAAAAAAAEABAAAAAAA=</HashCode>
+      <FileName>Game\ShipForPlacement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Crsch_2.Cell" Collapsed="true">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Game\Cell.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
